@@ -412,6 +412,47 @@ fieldset.grupo-op legend{padding:0;margin-bottom:8px}
 .consent h3{margin-top:0}
 .consent-l{margin:0 0 14px;padding-left:20px}
 .consent-l li{margin-bottom:8px}
+
+/* ---------- Versión 2.2: uso diario ---------- */
+.bv-n{display:flex;gap:6px;margin:0 0 12px}
+.bv-n span{flex:1;height:6px;border-radius:999px;background:var(--line)}
+.bv-n span.on{background:var(--brand)}
+.bv-paso h2{margin-top:0;outline:none}
+.bv-botones{margin-top:6px}
+.bv-botones .btn-pri{flex:1 1 180px}
+.sacar{margin:6px 0 2px;font-size:17px;color:var(--ink-2)}
+.sacar strong{color:var(--ink)}
+.racha{display:inline-flex;align-items:center;gap:4px;font:700 13.5px var(--f-ui);padding:3px 9px;border-radius:999px;background:var(--in);color:#fff;vertical-align:2px;white-space:nowrap}
+.racha .ic{width:14px;height:14px;color:#fff}
+.dilo{display:flex;gap:8px;align-items:stretch}
+.dilo input{flex:1;min-width:0}
+.dilo .btn{min-height:52px;padding:10px 16px}
+.dilo-mic{border:1.5px solid var(--line);border-radius:12px;width:52px;height:52px;flex:none}
+.dilo-mic.oyendo{background:var(--out);border-color:var(--out);color:#fff}
+.entendido{display:flex;gap:8px;align-items:flex-start;background:var(--in-soft);border-radius:var(--r-m);padding:10px 12px;margin:0 0 14px}
+.entendido .ic{width:20px;height:20px;color:var(--in);flex:none;margin-top:2px}
+.guia{border:1.5px solid var(--brand);border-radius:var(--r-l);padding:14px 16px;margin:10px 0 4px;background:var(--surface)}
+.guia-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.guia-h h2{margin:0;font-size:19px}
+.guia-l{list-style:none;margin:10px 0 12px;padding:0;display:grid;gap:10px}
+.guia-l li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;align-items:start}
+.guia-n{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font:800 15px var(--f-display);color:var(--ink-2)}
+.guia-l li.ok .guia-n{background:var(--in);border-color:var(--in);color:#fff}
+.guia-l li.ok .guia-n .ic{width:16px;height:16px;color:#fff}
+.guia-l li.ok strong{color:var(--ink-2);font-weight:400;text-decoration:line-through}
+.guia-l .ayuda{display:block;font-size:14.5px;color:var(--ink-2)}
+.opinion{background:var(--brand-soft);border-radius:var(--r-l);padding:14px 16px;margin:14px 0}
+.opinion h2{margin:0 0 4px;font-size:19px}
+.opinion p{margin:0 0 10px}
+.semana{border:1px solid var(--line);border-radius:var(--r-l);padding:14px 16px;margin:14px 0;background:var(--surface)}
+.semana h2{margin:0 0 8px;font-size:19px}
+.semana .btn-row{margin:10px 0 0}
+.tag-out{background:var(--out-soft);color:var(--out)}
+
+body.sin-negocio .nav{display:none}
+body.sin-negocio main{padding-bottom:40px}
+.welcome h1.q{font-size:clamp(24px,6.4vw,34px);line-height:1.12;margin-bottom:8px}
+.welcome .lead{font-size:16.5px}
 </style>
 </head>
 <body>
@@ -587,7 +628,8 @@ Object.assign(ICONS, {
   deuda:'<path d="M12 3v18M16.5 7.5c0-1.7-2-3-4.5-3s-4.5 1.3-4.5 3 2 2.6 4.5 3 4.5 1.3 4.5 3-2 3-4.5 3-4.5-1.3-4.5-3"/>',
   piloto:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
   compartir:'<circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="m8.2 10.8 7.6-3.6M8.2 13.2l7.6 3.6"/>',
-  editar:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>'
+  editar:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
+  micro:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M8.5 21h7"/>'
 });
 
 // signo: +1 entra plata, -1 sale plata, 0 no mueve el total de la caja
@@ -617,8 +659,10 @@ const TIPOS_DEUDA = {banco:'Banco o cooperativa', comunal:'Banca comunal', prest
 const PILOTO = {responsable:'Juan Pablo Barrancos Rojas, responsable del piloto Kipu', contacto:'59175559383'};
 // Si cambia el texto del consentimiento, sube este número para volver a pedirlo
 const CONSENTIMIENTO_V = 1;
+// Pregunta única de utilidad: ¿cómo te sentirías si ya no pudieras usar Kipu?
+const OPINIONES = {mal:'Muy mal, me hace falta', poco:'Un poco mal', igual:'Me da igual'};
 const KEY = 'kipu.datos.v1', KEY_RESP = 'kipu.datos.respaldo-v1', KEY_TEMA = 'kipu.tema';
-const VACIO = () => ({version:2, perfil:null, ajustes:{tc:0, tcFecha:'', ayudante:null, reglasPersonal:'', ultimaCopia:'', consentimiento:'', consentimientoV:CONSENTIMIENTO_V},
+const VACIO = () => ({version:2, perfil:null, ajustes:{tc:0, tcFecha:'', ayudante:null, reglasPersonal:'', ultimaCopia:'', consentimiento:'', consentimientoV:CONSENTIMIENTO_V, guiaOculta:false, recomendaciones:0, opinion:null},
   movs:[], conteos:[], productos:[], clientes:[], fondos:[], deudas:[], lotes:[], cierres:[], demo:false});
 let S = VACIO();
 let storageOK = true;
@@ -649,7 +693,9 @@ function normalizar(d){
     tc: num(a.tc) > 0 ? r2(num(a.tc)) : 0, tcFecha: isISO(a.tcFecha) ? a.tcFecha : '',
     ayudante: a.ayudante && str(a.ayudante.nombre) ? {nombre:str(a.ayudante.nombre, 40), pct:Math.min(100, Math.max(0, num(a.ayudante.pct)))} : null,
     reglasPersonal: str(a.reglasPersonal, 300), ultimaCopia: isISO(a.ultimaCopia) ? a.ultimaCopia : '',
-    consentimiento: isISO(a.consentimiento) && +a.consentimientoV === CONSENTIMIENTO_V ? a.consentimiento : '', consentimientoV:CONSENTIMIENTO_V
+    consentimiento: isISO(a.consentimiento) && +a.consentimientoV === CONSENTIMIENTO_V ? a.consentimiento : '', consentimientoV:CONSENTIMIENTO_V,
+    guiaOculta:!!a.guiaOculta, recomendaciones:Math.max(0, Math.round(num(a.recomendaciones))),
+    opinion:a.opinion && OPINIONES[a.opinion.v] && isISO(a.opinion.fecha) ? {v:a.opinion.v, fecha:a.opinion.fecha} : null
   };
   if (Array.isArray(d.movs)) v.movs = d.movs
     .filter(m => m && TIPOS[m.tipo] && isISO(m.fecha) && Number.isFinite(+m.monto) && +m.monto > 0)
@@ -666,7 +712,7 @@ function normalizar(d){
       precio:num(p.precio), markup:num(p.markup) || 20, costoUsd:Math.max(0, num(p.costoUsd))}));
   if (Array.isArray(d.clientes)) v.clientes = d.clientes
     .filter(c => c && str(c.nombre))
-    .map(c => ({id:String(c.id || uid()), nombre:str(c.nombre, 60), grupo:str(c.grupo, 40), telefono:str(c.telefono, 20), rapido:Math.max(0, num(c.rapido))}));
+    .map(c => ({id:String(c.id || uid()), nombre:str(c.nombre, 60), grupo:str(c.grupo, 40), telefono:str(c.telefono, 20), rapido:Math.max(0, num(c.rapido)), tope:Math.max(0, num(c.tope))}));
   if (Array.isArray(d.fondos)) v.fondos = d.fondos
     .filter(f => f && str(f.nombre))
     .map(f => ({id:String(f.id || uid()), nombre:str(f.nombre, 40), meta:Math.max(0, num(f.meta)),
@@ -745,10 +791,24 @@ function mercaderiaEn(fecha){
   for (const c of S.conteos) { if (c.fecha <= fecha) r = c; else break; }
   return r;
 }
+/* Mercadería estimada: el último conteo, más lo comprado después, menos el costo de lo vendido.
+   Evita que un surtido grande parezca una pérdida mientras no hay un conteo nuevo. */
+function mercEstimadaEn(fecha){
+  const c = mercaderiaEn(fecha), cp = costoPct();
+  const desde = c ? c.fecha : '', inclusivo = !!(c && S.perfil && c.fecha === S.perfil.fechaInicio);
+  let v = c ? c.valor : 0, estimada = false;
+  for (const m of S.movs) {
+    if (m.fecha > fecha) break;
+    if (c && (inclusivo ? m.fecha < desde : m.fecha <= desde)) continue;
+    if (m.tipo === 'compra') { v += m.monto; estimada = true; }
+    else if (m.tipo === 'venta') { v -= m.costo != null ? m.costo : m.monto * cp; estimada = true; }
+    else if (m.tipo === 'fiado' || m.tipo === 'entrega') { v -= m.monto * cp; estimada = true; }
+  }
+  return {valor:Math.max(0, Math.round(v)), estimada, fechaConteo:c ? c.fecha : null};
+}
 function capitalEn(fecha){
-  const caja = cajaHasta(fecha), m = mercaderiaEn(fecha), cobrar = porCobrarHasta(fecha);
-  const merc = m ? m.valor : 0;
-  return {caja, merc, cobrar, mercFecha:m ? m.fecha : null, total:r2(caja + merc + cobrar)};
+  const caja = cajaHasta(fecha), m = mercEstimadaEn(fecha), cobrar = porCobrarHasta(fecha);
+  return {caja, merc:m.valor, cobrar, mercFecha:m.fechaConteo, mercEstimada:m.estimada, total:r2(caja + m.valor + cobrar)};
 }
 // Costo de lo vendido: el que anotaste o el que sale de tu margen habitual
 const costoDe = m => m.costo != null ? m.costo : m.monto * costoPct();
@@ -857,7 +917,10 @@ function resumen(a, b){
   if (!ini && S.perfil) ini = S.conteos.find(c => c.fecha === S.perfil.fechaInicio && c.fecha >= a && c.fecha <= b) || null;
   const fin = mercaderiaEn(b);
   r.conteoOk = !!(ini && fin && fin !== ini && fin.fecha >= a);
-  r.deltaMerc = r.conteoOk ? r2(fin.valor - ini.valor) : 0;
+  // Sin conteo en el periodo, el cambio de mercadería se estima: lo comprado menos el costo de lo vendido
+  let costoVentas = 0;
+  if (!r.conteoOk) { const cp = costoPct(); for (const m of ms) { if (m.tipo === 'venta') costoVentas += m.costo != null ? m.costo : m.monto * cp; else if (m.tipo === 'fiado' || m.tipo === 'entrega') costoVentas += m.monto * cp; } }
+  r.deltaMerc = r.conteoOk ? r2(fin.valor - ini.valor) : r2(r.compra - costoVentas);
   r.ganancia = r2(r.ventas - r.compra - r.gasto - r.perdido - r.interes + r.deltaMerc);
   return r;
 }
@@ -867,10 +930,10 @@ function clientesTodos(){
   const map = new Map();
   const get = nombre => {
     const k = claveCli(nombre);
-    if (!map.has(k)) map.set(k, {nombre:String(nombre).trim(), debe:0, desde:'', adelanto:0, movs:[], grupo:'', telefono:'', rapido:0, id:null});
+    if (!map.has(k)) map.set(k, {nombre:String(nombre).trim(), debe:0, desde:'', adelanto:0, movs:[], grupo:'', telefono:'', rapido:0, tope:0, id:null});
     return map.get(k);
   };
-  for (const c of S.clientes) Object.assign(get(c.nombre), {id:c.id, grupo:c.grupo, telefono:c.telefono, rapido:c.rapido, nombre:c.nombre});
+  for (const c of S.clientes) Object.assign(get(c.nombre), {id:c.id, grupo:c.grupo, telefono:c.telefono, rapido:c.rapido, tope:c.tope || 0, nombre:c.nombre});
   for (const m of S.movs) {
     if (!TIPOS[m.tipo].cliente) continue;
     const c = get(m.cliente || 'Sin nombre');
@@ -1002,7 +1065,7 @@ function alertas(){
   let base = addDays(ini, -1); if (base < S.perfil.fechaInicio) base = S.perfil.fechaInicio;
   const dif = r2(capitalEn(hoy).total - capitalEn(base).total);
   if (dif < -0.5) list.push({nivel:'alerta', titulo:'Tu capital se achicó ' + fmt(-dif) + ' este mes',
-    texto:'Sumando caja, mercadería y lo que te deben, hoy tienes menos para trabajar que al empezar el mes.', href:'#flujo', link:'Ver el flujo del mes'});
+    texto:'Sumando caja, mercadería y lo que te deben, hoy tienes menos para trabajar que al empezar el mes.' + (r.cuota > 0 ? ' Parte se fue en cuotas de deudas: ' + fmt(r.cuota) + '.' : ''), href:'#flujo', link:'Ver el flujo del mes'});
   if (r.retiro > 0 && r.retiro > r.ganancia) list.push({nivel:'alerta', titulo:'Sacaste para la casa más de lo que ganaste',
     texto:'Este mes sacaste ' + fmt(r.retiro) + ' y la ganancia estimada es ' + fmt(r.ganancia) + '. La diferencia sale del capital del negocio.', href:'#flujo', link:'Ver la ganancia del mes'});
   const caras = S.deudas.filter(d => d.activa).map(d => ({d, c:costoDeuda(d)})).filter(x => x.c && x.c.mensual > 0.05);
@@ -1067,7 +1130,7 @@ function indicadores(dias){
     ventas:r.ventas, ventasDia:r2(r.ventas / Math.max(1, fechas.size)), ganancia:r.ganancia, retiro:r.retiro,
     capital0:c0.total, capital1:c1.total, semanas, semOk, tope,
     fiado:r.fiado, cobro:r.cobro, perdido:r.perdido, caras, deudas:S.deudas.filter(d => d.activa).length,
-    libre:bolsillos(hoy).libre};
+    libre:bolsillos(hoy).libre, racha:racha(), opinion:S.ajustes.opinion || null, recomendaciones:S.ajustes.recomendaciones || 0};
 }
 
 /* QR pendiente: días cerrados sin el total por QR, para cuadrarlos juntos */
@@ -1094,6 +1157,140 @@ function margenReal(){
   const m = r.ventas / costo - 1;
   if (m < -0.5 || m > 3) return null;
   return {margen:m, desde:a.fecha, hasta:b.fecha, ventas:r.ventas, costo:r2(costo)};
+}
+
+/* Racha: días seguidos con cierre. Los días sin ningún movimiento (negocio cerrado) no la cortan. */
+function racha(){
+  const hoy = hoyISO(); let d = cierreDe(hoy) ? hoy : addDays(hoy, -1), n = 0, saltos = 0;
+  const conMov = new Set(S.movs.map(m => m.fecha));
+  const ini = S.perfil ? S.perfil.fechaInicio : hoy;
+  while (d >= ini) {
+    if (cierreDe(d)) { n++; saltos = 0; }
+    else if (!conMov.has(d) && saltos < 2) saltos++;
+    else break;
+    d = addDays(d, -1);
+  }
+  return n;
+}
+/* Cuánto se puede sacar hoy para la casa. Lo que se saca debe salir de la ganancia:
+   el menor entre la plata libre, la ganancia del mes que todavía no se sacó y lo que queda del tope semanal. */
+function puedeSacar(){
+  const hoy = hoyISO(), b = bolsillos(hoy), tope = S.perfil ? S.perfil.sueldoSemanal : 0;
+  const mes = resumen(inicioMes(mesKey(hoy)), hoy);
+  const ganMes = mes.ventas * (1 - costoPct()) - mes.gasto - mes.perdido - mes.interes;
+  const porGanancia = Math.max(0, ganMes - mes.retiro);
+  const resto = tope > 0 ? Math.max(0, r2(tope - resumen(inicioSemana(hoy), hoy).retiro)) : null;
+  const limites = [['libre', b.libre], ['ganancia', porGanancia]]; if (resto != null) limites.push(['tope', resto]);
+  limites.sort((x, y) => x[1] - y[1]);
+  return {monto:Math.max(0, Math.floor(limites[0][1])), limita:limites[0][0], libre:b.libre, tope, resto, ganMes:r2(ganMes), retiroMes:mes.retiro, ventasMes:mes.ventas};
+}
+// Frase corta que explica el monto que se puede sacar
+function fraseSacar(ps){
+  if (ps.monto > 0) return {ok:true, motivo:ps.limita === 'tope' ? 'lo que queda de tu tope de la semana' : ps.limita === 'ganancia' ? 'lo que te queda de la ganancia de este mes' : 'sin tocar la plata para reponer'};
+  if (ps.limita === 'libre') return {ok:false, motivo:'Hoy no conviene sacar plata para la casa: lo que hay es para reponer y cubrir tus bolsillos.'};
+  if (ps.limita === 'tope') return {ok:false, motivo:'Ya llegaste a tu tope de la semana para la casa.'};
+  return {ok:false, motivo:ps.ventasMes > 0 ? 'Este mes ya sacaste lo que ganó el negocio. Si sacas más, achicas tu capital.' : 'Todavía no hay ganancia para sacar: lo que tienes es tu capital para trabajar.'};
+}
+/* Resumen de una semana (lunes a domingo). offset 0 = esta semana, -1 = la anterior */
+function semana(offset){
+  const hoy = hoyISO(), a = addDays(inicioSemana(hoy), 7 * (offset || 0));
+  let b = addDays(a, 6); if (b > hoy) b = hoy;
+  const r = resumen(a, b);
+  // Ganancia aproximada con el margen: más estable que restar las compras de una sola semana
+  const ganancia = Math.round(r.ventas * (1 - costoPct()) - r.gasto - r.perdido - r.interes);
+  return {desde:a, hasta:b, ventas:r.ventas, ganancia, retiro:r.retiro, fiado:r.fiado, cobro:r.cobro, n:r.n,
+    cierres:S.cierres.filter(c => c.fecha >= a && c.fecha <= b).length, dias:diasEntre(a, b) + 1};
+}
+// La semana que conviene mostrar: la actual si ya tiene 2 días con datos; si no, la pasada
+function semanaVisible(){
+  const act = semana(0);
+  if (act.dias >= 3 || !semana(-1).n) return {s:act, ant:semana(-1), actual:true};
+  return {s:semana(-1), ant:semana(-2), actual:false};
+}
+function textoSemana(){
+  const v = semanaVisible(), s = v.s;
+  const l = ['Mi semana en Kipu' + (S.perfil ? ', ' + S.perfil.nombre : ''), 'Del ' + fechaCorta(s.desde) + ' al ' + fechaCorta(s.hasta),
+    'Vendí: ' + fmt(s.ventas), 'Ganancia aproximada: ' + fmt(s.ganancia), 'Saqué para la casa: ' + fmt(s.retiro)];
+  if (s.fiado || s.cobro) l.push('Fiado: di ' + fmt(s.fiado) + ', cobré ' + fmt(s.cobro));
+  l.push('Cierres hechos: ' + s.cierres);
+  return l.join('\n');
+}
+
+/* =========================================================
+   Anotar con palabras: entiende frases como "compré 350 de mercadería"
+   o "le fié 20 a doña Carmen". Siempre se confirma antes de guardar.
+   ========================================================= */
+const CAT_PALABRAS = [
+  ['Alquiler', /alquiler|anticretico|arriendo/],
+  ['Transporte', /pasaje|taxi|flete|transporte|gasolina|micro\b|trufi|carguero|moto\b/],
+  ['Luz y agua', /\bluz\b|\bagua\b|internet|\bgas\b|garrafa|electricidad|cre\b|saguapac/],
+  ['Sueldos', /sueldo|ayudante|empleado|jornal|salario/],
+  ['Impuestos', /impuesto|patente|alcaldia|sentaje|multa/]
+];
+const NO_CLIENTE = /^(la|el|los|las|mi|su|sus|lo|le|me|se|que|por|con|en|y|un|una|casa|caja|mercaderia|proveedor|mayorista|banco|cajero|cuenta|negocio|credito|fiado|qr|efectivo|hoy|ayer|bs|bolivianos|pesos)$/;
+function nombrePropio(s){ return s.replace(/\s+/g, ' ').trim().split(' ').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' '); }
+function interpretar(texto){
+  const orig = String(texto || '').trim().slice(0, 200);
+  const t = ' ' + sinAcentos(orig).replace(/[¿?¡!]/g, ' ').replace(/\s+/g, ' ') + ' ';
+  const r = {texto:orig, tipo:null, monto:NaN, medio:'efectivo', cliente:'', cat:'', nota:'', fecha:hoyISO(), fondo:''};
+  // Monto: el primer número, con miles o decimales
+  const mm = t.match(/(\d{1,3}(?:\.\d{3})+(?:,\d{1,2})?|\d+(?:[.,]\d{1,2})?)/);
+  if (mm) r.monto = parseMonto(mm[1]);
+  if (/\bmil\b/.test(t) && mm && r.monto < 1000 && new RegExp(mm[1].replace('.', '\\.') + '\\s+mil\\b').test(t)) r.monto = r2(r.monto * 1000);
+  if (/\bayer\b/.test(t)) r.fecha = addDays(hoyISO(), -1);
+  if (/\bqr\b|transferenc|yape|\bbanco\b|tarjeta|billetera/.test(t)) r.medio = 'qr';
+  const es = re => re.test(t);
+  // El orden importa: de lo más específico a lo más general
+  if (es(/cajero|\bdeposit/)) { r.tipo = 'cambio'; r.medio = es(/deposit/) ? 'qr' : 'efectivo'; }
+  else if (es(/\bme pag(o|aron)\b|\bcobre\b|\bme cancel(o|aron)\b|\bme abon(o|aron)\b|\bpago su (fiado|deuda|cuenta)\b/)) r.tipo = 'cobro';
+  else if (es(/\bfie\b|\bfiado\b|\bfiar\b|\bfiamos\b|a credito|\bme debe\b|\bquedo debiendo\b/)) r.tipo = 'fiado';
+  else if (es(/adelanto|anticipo|\bsena\b/)) r.tipo = 'adelanto';
+  else if (es(/\bme prestaron\b|\brecibi (un |el )?(prestamo|credito)\b|\bsaque (un )?(prestamo|credito)\b|\bme dieron (un |el )?(prestamo|credito)\b/)) r.tipo = 'prestamo';
+  else if (es(/\bcuota\b|cobrador|prestamista|pasanaku|\bgota\b/)) r.tipo = 'cuota';
+  else if (es(/para (la|mi) casa|\bme lleve\b|\bsaque\b|\bretire\b|\bpara mi\b|gastos? de (la )?casa|\bpersonal\b/)) r.tipo = 'retiro';
+  else if (es(/\baparte\b|\bguarde\b|\bahorre\b/) && S.fondos.length) r.tipo = 'apartar';
+  else if (es(/\bcompre\b|\bcompra\b|\bcompramos\b|\bsurti\b|mercaderia|proveedor|mayorista|insumos|ingredientes|materia prima|\bme surti\b/)) r.tipo = 'compra';
+  else if (es(/\bvendi\b|\bventa\b|\bvendimos\b|\bvendido\b/)) r.tipo = 'venta';
+  else if (es(/\bpague\b|\bgaste\b|\bgasto\b|\bpagamos\b/) || CAT_PALABRAS.some(c => c[1].test(t))) r.tipo = 'gasto';
+  if (r.tipo === 'gasto') { const c = CAT_PALABRAS.find(x => x[1].test(t)); r.cat = c ? c[0] : 'Otros'; }
+  if (r.tipo === 'cuota') { const d = S.deudas.find(x => x.activa && t.indexOf(' ' + sinAcentos(x.nombre) + ' ') > -1) || (S.deudas.filter(x => x.activa).length === 1 ? S.deudas.find(x => x.activa) : null); if (d) r.deuda = d.id; }
+  if (r.tipo === 'apartar') { const f = S.fondos.find(x => t.indexOf(sinAcentos(x.nombre)) > -1); if (f) r.fondo = f.id; }
+  if (r.tipo && TIPOS[r.tipo].cliente) {
+    // Primero un cliente conocido; si no, lo que viene después de "a", "de" o "para"
+    const conocidos = nombresClientes().filter(n => t.indexOf(' ' + sinAcentos(n) + ' ') > -1).sort((a, b) => b.length - a.length);
+    if (conocidos.length) r.cliente = conocidos[0];
+    else {
+      const t2 = t.replace(/\b(a|al|de|del|para)\s+(?:la|el|los|las|mi|su)\s+/g, '$1 ');
+      const m2 = t2.match(/\b(?:a|al|de|del|para)\s+((?:(?:don|dona|sr|sra|senor|senora|prof|profe|tia|tio|casera|casero)\s+)?[a-z]+(?:\s+[a-z]+)?)/);
+      if (m2) {
+        const palabras = m2[1].split(' ').filter(p => !NO_CLIENTE.test(p) && !/^\d/.test(p));
+        if (palabras.length) {
+          // Recupera la forma original (con tildes y ñ) de esas palabras
+          const origPal = orig.split(/\s+/);
+          const rec = palabras.map(p => origPal.find(o => sinAcentos(o).replace(/[^a-z]/g, '') === p) || p);
+          r.cliente = nombrePropio(rec.join(' ').replace(/[.,;:]/g, '')).replace(/^Dona /, 'Doña ');
+        }
+      }
+    }
+  }
+  if (r.tipo === 'gasto' || r.tipo === 'compra') r.nota = orig.slice(0, 140);
+  return r;
+}
+// Dictado por voz: solo si el navegador lo ofrece (Chrome en Android, por ejemplo)
+const VozAPI = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+let vozActiva = null;
+function dictar(alTerminar){
+  if (!VozAPI) { toast('Este navegador no permite dictar. Escríbelo.'); return; }
+  if (vozActiva) { try { vozActiva.stop(); } catch (e) {} return; }
+  let rec;
+  try { rec = new VozAPI(); } catch (e) { toast('No se pudo usar el micrófono. Escríbelo.'); return; }
+  rec.lang = 'es-BO'; rec.interimResults = false; rec.maxAlternatives = 1;
+  const fin = () => { vozActiva = null; document.querySelectorAll('[data-act="dictar"]').forEach(b => b.classList.remove('oyendo')); };
+  rec.onresult = e => { const txt = e.results && e.results[0] && e.results[0][0] ? e.results[0][0].transcript : ''; fin(); if (txt) alTerminar(txt); };
+  rec.onerror = e => { fin(); toast(e && e.error === 'not-allowed' ? 'Permite el micrófono para dictar, o escríbelo.' : 'No te escuché bien. Prueba otra vez o escríbelo.'); };
+  rec.onend = fin;
+  try { rec.start(); vozActiva = rec; document.querySelectorAll('[data-act="dictar"]').forEach(b => b.classList.add('oyendo')); toast('Te escucho. Di, por ejemplo: compré 350 de mercadería'); }
+  catch (e) { fin(); toast('No se pudo usar el micrófono. Escríbelo.'); }
 }
 
 /* =========================================================
@@ -1399,75 +1596,141 @@ function leerCamposNegocio(f, errs){
   return {tipo, modoVentas:modo, margen:Number.isFinite(margen) ? r2(margen) : 20, insumos:Number.isFinite(insumos) ? r2(insumos) : 40};
 }
 function vBienvenida(){
+  const radio = (name, v, txt, sub, sel) => '<label class="opcion"><input type="radio" name="' + name + '" value="' + v + '"' + (sel ? ' checked' : '') + '><span><strong>' + txt + '</strong><span class="ayuda">' + sub + '</span></span></label>';
+  const paso = (n, titulo, cuerpo, botones) => '<div class="bv-paso" data-paso="' + n + '"' + (n === 1 ? '' : ' hidden') + '>' +
+    '<p class="bv-n" aria-hidden="true"><span class="' + (n >= 1 ? 'on' : '') + '"></span><span class="' + (n >= 2 ? 'on' : '') + '"></span><span class="' + (n >= 3 ? 'on' : '') + '"></span></p>' +
+    '<h2 tabindex="-1">' + titulo + ' <span class="sr">(paso ' + n + ' de 3)</span></h2>' + cuerpo + '<div class="bv-err" role="alert"></div><div class="btn-row bv-botones">' + botones + '</div></div>';
+  const atras = '<button type="button" class="btn btn-ghost" data-act="bv-ir" data-n="-1">' + ic('atras') + 'Atrás</button>';
+  const sig = '<button type="button" class="btn btn-pri" data-act="bv-ir" data-n="1">Siguiente</button>';
   return '<section class="welcome">' +
     '<h1 class="q">¿Cuánta plata de tu negocio es de verdad libre?</h1>' +
-    '<p class="lead">Al cerrar, cuenta la caja y escribe lo que entró por QR. Kipu calcula lo que vendiste, separa la plata para volver a comprar y te dice cuánto puedes sacar sin achicar tu negocio.</p>' +
-    '<div class="btn-row"><button type="button" class="btn" data-act="demo">Ver una tienda de ejemplo</button></div>' +
-    '<form class="panel" id="f-bienvenida" novalidate style="margin-top:18px">' +
-    '<h2 style="margin-top:0">Empieza en un minuto</h2>' +
-    '<label class="campo"><span class="lbl">Nombre de tu negocio</span><input type="text" name="nombre" maxlength="80" autocomplete="off" placeholder="Por ejemplo, Tienda Doña Rosa" required></label>' +
-    camposNegocioHTML() +
-    '<div class="grid2">' +
-    '<label class="campo"><span class="lbl">Efectivo en la caja hoy</span><input type="text" inputmode="decimal" name="efectivo" autocomplete="off" placeholder="0"></label>' +
-    '<label class="campo"><span class="lbl">Plata del negocio en tu cuenta o QR</span><input type="text" inputmode="decimal" name="cuenta" autocomplete="off" placeholder="0"><span class="ayuda">Si la mezclas con la de la casa, pon solo lo que es del negocio.</span></label>' +
-    '</div>' +
-    '<details class="mas-datos"><summary>Más datos (opcional)</summary>' +
-    '<label class="campo" style="margin-top:12px"><span class="lbl">¿Qué vendes?</span><input type="text" name="rubro" maxlength="60" autocomplete="off" placeholder="Abarrotes, ropa, comida, repuestos"></label>' +
-    '<label class="campo"><span class="lbl">Valor de tu mercadería</span><input type="text" inputmode="decimal" name="merc" autocomplete="off" placeholder="0"><span class="ayuda">Lo que te costaría volver a comprarla.</span></label>' +
-    '<div class="grid2"><label class="campo"><span class="lbl">Días que abres por semana</span><select name="dias"><option value="7">7 días</option><option value="6" selected>6 días</option><option value="5">5 días</option></select></label>' +
-    '<label class="campo"><span class="lbl">Tope para la casa por semana</span><input type="text" inputmode="decimal" name="sueldo" autocomplete="off" placeholder="0"><span class="ayuda">Te avisamos si lo pasas.</span></label></div></details>' +
-    '<div id="bv-err" role="alert"></div>' +
-    '<button type="submit" class="btn btn-pri" style="width:100%;margin-top:14px">Empezar</button>' +
+    '<p class="lead">Cuenta tu caja al cerrar y Kipu te dice cuánto vendiste, cuánto guardar para volver a comprar y cuánto puedes sacar sin achicar tu negocio.</p>' +
+    '<form class="panel" id="f-bienvenida" data-paso="1" novalidate style="margin-top:18px">' +
+    paso(1, 'Tu negocio',
+      '<label class="campo"><span class="lbl">¿Cómo se llama?</span><input type="text" name="nombre" maxlength="80" autocomplete="off" placeholder="Por ejemplo, Tienda Doña Rosa" required></label>' +
+      '<fieldset class="campo grupo-op"><legend class="lbl">¿Qué haces?</legend>' +
+      radio('tipo', 'comercio', 'Vendo productos', 'Tienda, ropa, repuestos, ferretería', true) +
+      radio('tipo', 'comida', 'Preparo comida', 'Pensión, salteñas, jugos, panadería', false) +
+      radio('tipo', 'servicio', 'Doy un servicio', 'Peluquería, taller, costura, técnico', false) + '</fieldset>', sig) +
+    paso(2, 'La plata de tu negocio hoy',
+      '<p class="note" style="margin-top:-4px">Si no sabes el monto exacto, pon un aproximado. Después lo puedes corregir.</p>' +
+      '<label class="campo"><span class="lbl">Efectivo en la caja</span><input type="text" inputmode="decimal" name="efectivo" class="monto" autocomplete="off" placeholder="0"></label>' +
+      '<label class="campo"><span class="lbl">Plata del negocio en tu cuenta o QR</span><input type="text" inputmode="decimal" name="cuenta" class="monto" autocomplete="off" placeholder="0"><span class="ayuda">Si la mezclas con la de la casa, pon solo lo que es del negocio.</span></label>', atras + sig) +
+    paso(3, '¿Cómo quieres anotar tus ventas?',
+      '<fieldset class="campo grupo-op"><legend class="sr">Forma de anotar las ventas</legend>' +
+      radio('modo', 'cierre', 'Cuento la caja al cerrar', 'No anotas cada venta. En la noche cuentas la plata y Kipu calcula lo que vendiste. Es lo más fácil.', true) +
+      radio('modo', 'cada', 'Anoto cada venta', 'Si ya anotas todo en un cuaderno. En la noche cuentas la caja para ver si cuadra.', false) + '</fieldset>',
+      atras + '<button type="submit" class="btn btn-pri">Empezar a usar Kipu</button>') +
+    '</form>' +
+    '<div class="btn-row" style="margin-top:14px"><button type="button" class="btn" data-act="demo">Ver una tienda de ejemplo</button></div>' +
     '<p class="note" style="margin-top:12px">No pide NIT ni datos de impuestos. Tus datos se guardan solo en este celular, sin crear una cuenta. ¿Ya tenías una copia? <a href="#datos">Restáurala aquí</a>.</p>' +
-    '</form></section>';
+    '</section>';
+}
+// Avanza o retrocede en los pasos de la bienvenida, validando lo mínimo
+function bvIr(f, delta){
+  const n = +f.dataset.paso || 1, act = f.querySelector('.bv-paso[data-paso="' + n + '"]'), err = act.querySelector('.bv-err');
+  err.innerHTML = '';
+  if (delta > 0) {
+    if (n === 1 && !f.elements.nombre.value.trim()) { err.innerHTML = errsHTML(['Escribe el nombre de tu negocio.']); f.elements.nombre.focus(); return false; }
+    if (n === 2) {
+      const g = k => f.elements[k].value, ef = montoCampo(g, 'efectivo'), cu = montoCampo(g, 'cuenta');
+      if (!Number.isFinite(ef) || ef < 0) { err.innerHTML = errsHTML(['Revisa el efectivo: escribe solo números.']); f.elements.efectivo.focus(); return false; }
+      if (!Number.isFinite(cu) || cu < 0) { err.innerHTML = errsHTML(['Revisa la plata de tu cuenta: escribe solo números.']); f.elements.cuenta.focus(); return false; }
+    }
+  }
+  const sig = Math.max(1, Math.min(3, n + delta)); if (sig === n) return true;
+  f.querySelectorAll('.bv-paso').forEach(p => { p.hidden = +p.dataset.paso !== sig; });
+  f.dataset.paso = sig;
+  const h = f.querySelector('.bv-paso[data-paso="' + sig + '"] h2'); if (h) h.focus({preventScroll:true});
+  const primero = f.querySelector('.bv-paso[data-paso="' + sig + '"] input[type="text"]'); if (primero && sig === 2) primero.focus();
+  return true;
 }
 // Botones de anotar más usados, según cómo anota las ventas
 const tiposRapidos = () => S.perfil && S.perfil.modoVentas === 'cada'
   ? [['venta','in','entra','Vendí'], ['compra','out','caja','Compré mercadería'], ['gasto','out','sale','Pagué un gasto'], ['retiro','out','casa','Saqué para la casa']]
   : [['compra','out','caja','Compré mercadería'], ['gasto','out','sale','Pagué un gasto'], ['retiro','out','casa','Saqué para la casa'], ['fiado','neu','fiado','Vendí fiado']];
+// Guía de los primeros días: tres pasos que se marcan solos
+function guiaHTML(){
+  if (S.demo || S.ajustes.guiaOculta) return '';
+  const cada = S.perfil.modoVentas === 'cada';
+  const pasos = [
+    [S.movs.some(m => m.origen !== 'cierre'), cada ? 'Anota tu primera venta o gasto' : 'Anota algo que salió: una compra, un gasto o plata para la casa', 'Usa los botones de abajo o escríbelo con tus palabras.'],
+    [S.cierres.length > 0, cada ? 'Al cerrar, cuenta la caja' : 'Esta noche, cierra el día', cada ? 'Así ves si cuadra con lo que anotaste.' : 'Cuentas la plata y Kipu calcula cuánto vendiste.'],
+    [!!S.ajustes.ultimaCopia, 'Guarda una copia de tus datos', 'Para no perder nada si cambias o limpias el celular.']
+  ];
+  const hechos = pasos.filter(p => p[0]).length;
+  if (hechos === pasos.length) return '';
+  return '<section class="guia" aria-labelledby="h-guia"><div class="guia-h"><h2 id="h-guia">Primeros pasos: ' + hechos + ' de 3</h2><button type="button" class="icon-btn" data-act="guia-ocultar" aria-label="Ocultar los primeros pasos">' + ic('cerrar') + '</button></div><ol class="guia-l">' +
+    pasos.map((p, i) => '<li class="' + (p[0] ? 'ok' : '') + '"><span class="guia-n" aria-hidden="true">' + (p[0] ? ic('check') : (i + 1)) + '</span><div><strong>' + p[1] + (p[0] ? ' <span class="sr">(hecho)</span>' : '') + '</strong>' + (p[0] ? '' : '<span class="ayuda">' + p[2] + '</span>') + '</div></li>').join('') +
+    '</ol>' + (pasos[0][0] && !pasos[1][0] ? '<a class="btn btn-pri" href="#cierre">' + (cada ? 'Contar la caja' : 'Hacer mi primer cierre') + '</a>' : pasos[1][0] && !pasos[2][0] ? '<a class="btn" href="#datos">Guardar una copia</a>' : '') + '</section>';
+}
+// Una sola pregunta para saber si Kipu sirve, después de usarlo unos días
+function opinionHTML(){
+  if (S.demo || S.ajustes.opinion || S.cierres.length < 5) return '';
+  return '<section class="opinion" aria-labelledby="h-op"><h2 id="h-op">Una pregunta</h2><p>Si mañana ya no pudieras usar Kipu, ¿cómo te sentirías?</p><div class="chips">' +
+    Object.keys(OPINIONES).map(k => '<button type="button" class="chip" data-act="opinar" data-v="' + k + '">' + OPINIONES[k] + '</button>').join('') + '</div>' +
+    '<p class="note">Tu respuesta se guarda en tu celular. Solo se comparte si mandas tus indicadores del piloto.</p></section>';
+}
+function semanaHTML(){
+  const v = semanaVisible(), s = v.s, a = v.ant;
+  if (!s.n) return '';
+  const cambio = (x, y) => { if (!(y > 0) || !v.ant.n) return ''; const p = (x - y) / y * 100; if (Math.abs(p) < 1) return ' <span class="muted">igual que la semana anterior</span>'; return ' <span class="' + (p > 0 ? 'in' : 'out') + '">' + (p > 0 ? 'subió ' : 'bajó ') + Math.abs(Math.round(p)) + '%</span>'; };
+  const t = S.perfil.sueldoSemanal, pc = t > 0 ? Math.min(100, s.retiro / t * 100) : 0;
+  return '<section class="semana" aria-labelledby="h-sem"><h2 id="h-sem">' + (v.actual ? 'Tu semana hasta hoy' : 'Tu semana pasada') + '</h2>' +
+    '<dl class="kv"><dt>Vendiste</dt><dd>' + fmt(s.ventas) + (v.actual ? '' : cambio(s.ventas, a.ventas)) + '</dd>' +
+    '<dt>Ganancia aproximada</dt><dd class="' + (s.ganancia >= 0 ? '' : 'out') + '">' + fmt(s.ganancia) + '</dd>' +
+    '<dt>Sacaste para la casa</dt><dd class="' + (s.retiro > s.ganancia && s.retiro > 0 ? 'out' : '') + '">' + fmt(s.retiro) + (t > 0 ? ' de ' + fmt(t) : '') + '</dd></dl>' +
+    (t > 0 ? '<div class="medidor' + (s.retiro > t ? ' pasado' : '') + '" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + Math.round(pc) + '" aria-label="Uso del tope semanal para la casa"><span style="width:' + pc.toFixed(1) + '%"></span></div>' : '') +
+    (s.retiro > s.ganancia && s.retiro > 0 ? '<p class="note out">Sacaste más de lo que ganó el negocio esta semana. La diferencia sale de tu capital.</p>' : '') +
+    '<div class="btn-row"><a class="btn btn-ghost" href="' + esc(waLink('', textoSemana())) + '" target="_blank" rel="noopener">' + ic('chat') + 'Compartir mi semana</a>' +
+    (t > 0 ? '' : '<a class="btn btn-ghost" href="#negocio">Poner un tope para la casa</a>') + '</div></section>';
+}
 function vInicio(){
   const hoy = hoyISO(), b = bolsillos(hoy), s = saldos(hoy), c = cierreDe(hoy), cada = S.perfil.modoVentas === 'cada';
+  const ps = puedeSacar(), rch = racha(), tarde = new Date().getHours() >= 15;
   const heroTxt = b.libre >= 0
     ? '<p class="cap-h">Plata libre hoy</p><p class="big"><span class="in num">' + fmt(b.libre) + '</span></p>'
     : '<p class="cap-h">Plata libre hoy</p><p class="big"><span class="out num">Te faltan ' + fmt(-b.libre) + '</span></p>';
+  const fs = fraseSacar(ps);
+  const sacar = '<p class="sacar">' + (fs.ok ? 'Hoy puedes sacar para la casa hasta <strong class="num">' + fmt(ps.monto) + '</strong>, ' + fs.motivo + '.' : fs.motivo) + '</p>';
   const tres = '<dl class="tres"><div><dt>Tienes</dt><dd class="num">' + fmt(b.caja) + '</dd></div><div><dt>Para reponer</dt><dd class="num">' + fmt(b.rep) + '</dd></div><div><dt>Apartado</dt><dd class="num">' + fmt(r2(b.totalFondos + b.adelantos + b.ayud)) + '</dd></div></dl>';
   const medios = '<div class="medios">' +
     '<div class="medio"><span class="cap">' + ic('caja') + 'Efectivo</span><b class="num' + (s.efectivo < 0 ? ' out' : '') + '">' + fmt(s.efectivo) + '</b></div>' +
     '<div class="medio"><span class="cap">' + ic('banco') + 'Cuenta o QR</span><b class="num' + (s.cuenta < 0 ? ' out' : '') + '">' + fmt(s.cuenta) + '</b></div>' +
     '<button type="button" class="btn btn-ghost medio-btn" data-act="anotar" data-tipo="cambio">' + ic('cambio') + 'Saqué del cajero o deposité</button></div>';
+  const rachaTxt = rch >= 2 ? '<span class="racha">' + ic('check') + rch + ' días seguidos</span>' : '';
   let cierreCard;
   if (c) {
     const r = resumen(hoy, hoy);
-    cierreCard = '<div class="cierre-card hecho">' + ic('check') + '<div><strong>Ya cerraste el día</strong><p>Vendiste ' + fmt(r.venta + r.entrega) + (r.fiado ? ' y fiaste ' + fmt(r.fiado) : '') + (c.qrPend ? '. Falta el total por QR.' : '.') + '</p></div>' +
+    cierreCard = '<div class="cierre-card hecho">' + ic('check') + '<div><strong>Ya cerraste el día</strong> ' + rachaTxt + '<p>Vendiste ' + fmt(r.venta + r.entrega) + (r.fiado ? ' y fiaste ' + fmt(r.fiado) : '') + (c.qrPend ? '. Falta el total por QR.' : '.') + '</p></div>' +
       '<div class="btn-row"><button type="button" class="btn" data-act="ver-cierre" data-fecha="' + hoy + '">Ver resumen</button><a class="btn btn-ghost" href="' + esc(waLink('', textoCierre(hoy))) + '" target="_blank" rel="noopener">' + ic('chat') + 'Compartir</a></div></div>';
   } else {
-    cierreCard = '<div class="cierre-card">' + ic('cierre') + '<div><strong>' + (cada ? 'Cuenta la caja al cerrar' : 'Cierra el día en 2 minutos') + '</strong><p>' + (cada ? 'Mira si lo que hay en la caja cuadra con lo que anotaste.' : 'Cuenta el efectivo y Kipu calcula lo que vendiste. No hace falta anotar cada venta.') + '</p></div>' +
-      '<div class="btn-row"><a class="btn btn-pri" href="#cierre">' + (cada ? 'Contar la caja' : 'Hacer el cierre') + '</a></div></div>';
+    cierreCard = '<div class="cierre-card">' + ic('cierre') + '<div><strong>' + (cada ? 'Cuenta la caja al cerrar' : tarde ? 'Cierra el día en 2 minutos' : 'Esta noche, cierra el día') + '</strong> ' + rachaTxt +
+      '<p>' + (cada ? 'Mira si lo que hay en la caja cuadra con lo que anotaste.' : 'Cuentas el efectivo y Kipu calcula lo que vendiste. No hace falta anotar cada venta.') + '</p></div>' +
+      '<div class="btn-row"><a class="btn ' + (tarde ? 'btn-pri' : '') + '" href="#cierre">' + (cada ? 'Contar la caja' : 'Hacer el cierre') + '</a></div></div>';
   }
   const quick = tiposRapidos().map(q => '<button type="button" class="btn btn-' + q[1] + '" data-act="anotar" data-tipo="' + q[0] + '">' + ic(q[2]) + q[3] + '</button>').join('');
-  let tope = '';
-  if (S.perfil.sueldoSemanal > 0) {
-    const sem = resumen(inicioSemana(hoy), hoy), t = S.perfil.sueldoSemanal, pc = Math.min(100, sem.retiro / t * 100);
-    tope = '<section class="tope" aria-labelledby="h-tope"><h2 id="h-tope">Para la casa esta semana</h2>' +
-      '<p class="sub">Sacaste <strong class="num' + (sem.retiro > t ? ' out' : '') + '">' + fmt(sem.retiro) + '</strong> de tu tope de ' + fmt(t) + '.' + (sem.retiro > t ? ' Te pasaste por ' + fmt(sem.retiro - t) + '.' : ' Te quedan ' + fmt(t - sem.retiro) + '.') + '</p>' +
-      '<div class="medidor' + (sem.retiro > t ? ' pasado' : '') + '" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + Math.round(pc) + '" aria-label="Uso del tope semanal"><span style="width:' + pc.toFixed(1) + '%"></span></div></section>';
-  }
+  const dilo = '<form id="f-dilo" class="dilo" novalidate><label class="sr" for="dilo-txt">Escribe lo que pasó</label>' +
+    '<input id="dilo-txt" type="text" name="texto" maxlength="200" autocomplete="off" enterkeyhint="done" placeholder="' + (cada ? 'Escribe: vendí 80 por QR' : 'Escribe: compré 350 de mercadería') + '">' +
+    (VozAPI ? '<button type="button" class="icon-btn dilo-mic" data-act="dictar" aria-label="Dictar con la voz">' + ic('micro') + '</button>' : '') +
+    '<button type="submit" class="btn btn-pri">Anotar</button></form>';
   const al = alertas();
   const alHTML = x => '<li class="al ' + x.nivel + '">' + ic(x.nivel === 'info' ? 'info' : 'alerta') + '<div><strong>' + esc(x.titulo) + '</strong><p>' + esc(x.texto) + '</p>' +
     (x.fecha ? '<button type="button" class="linkbtn" data-act="ir-cierre" data-fecha="' + x.fecha + '">' + esc(x.link) + '</button>' : '<a href="' + x.href + '">' + esc(x.link) + '</a>') + '</div></li>';
-  const alertasHTML = al.length ? '<section aria-labelledby="h-al"><h2 id="h-al">Para revisar</h2><ul class="alertas">' + al.slice(0, 3).map(alHTML).join('') + '</ul>' +
-    (al.length > 3 ? '<details style="margin-top:8px"><summary class="muted">Ver ' + (al.length - 3) + ' avisos más</summary><ul class="alertas" style="margin-top:8px">' + al.slice(3).map(alHTML).join('') + '</ul></details>' : '') + '</section>' : '';
-  const ult = S.movs.slice(-4).reverse();
+  const alertasHTML = al.length ? '<section aria-labelledby="h-al"><h2 id="h-al">Para revisar</h2><ul class="alertas">' + al.slice(0, 2).map(alHTML).join('') + '</ul>' +
+    (al.length > 2 ? '<details style="margin-top:8px"><summary class="muted">Ver ' + (al.length - 2) + ' avisos más</summary><ul class="alertas" style="margin-top:8px">' + al.slice(2).map(alHTML).join('') + '</ul></details>' : '') + '</section>' : '';
+  const ult = S.movs.slice(-3).reverse();
   return '<h1 class="sr">Resumen de ' + esc(S.perfil.nombre) + '</h1><div class="ini-grid"><div class="ini-a">' +
-    '<section class="hero" aria-live="polite">' + heroTxt + tres + barraBolsillos(b, true) +
+    '<section class="hero" aria-live="polite">' + heroTxt + sacar + tres + barraBolsillos(b, true) +
     '<p class="note" style="margin-top:6px"><a href="#bolsillos">¿Cómo se calcula?</a></p></section>' +
-    cierreCard + instalarHTML(false) +
-    '<section aria-labelledby="h-anotar"><h2 id="h-anotar">Anotar durante el día</h2><div class="quick">' + quick + '</div>' +
+    cierreCard + guiaHTML() + instalarHTML(false) +
+    '<section aria-labelledby="h-anotar"><h2 id="h-anotar">Anotar durante el día</h2>' + dilo +
+    '<div class="quick" style="margin-top:10px">' + quick + '</div>' +
     '<div class="btn-row" style="margin-top:8px"><button type="button" class="btn btn-ghost" data-act="anotar">' + ic('mas') + 'Otra cosa</button></div></section>' +
-    medios + '</div><div class="ini-b">' + alertasHTML + tope +
+    medios + '</div><div class="ini-b">' + alertasHTML + opinionHTML() + semanaHTML() +
     '<section aria-labelledby="h-ult"><h2 id="h-ult">Lo último que anotaste</h2>' +
     (ult.length ? '<ul class="lista">' + ult.map(movHTML).join('') + '</ul><div class="btn-row"><a class="btn btn-ghost" href="#movimientos">Ver todos los movimientos</a></div>'
-                : vacioHTML(cada ? 'Todavía no hay movimientos. Empieza por tu primera venta.' : 'Todavía no hay movimientos. Si compras o pagas algo, anótalo. Las ventas salen del cierre.', cada)) + '</section></div></div>';
+                : vacioHTML(cada ? 'Todavía no hay movimientos. Empieza por tu primera venta.' : 'Todavía no hay movimientos. Si compras o pagas algo, anótalo. Las ventas salen del cierre.', false)) + '</section></div></div>';
 }
 function capitalHTML(){
   const hoy = hoyISO();
@@ -1486,9 +1749,9 @@ function capitalHTML(){
     '<p class="sub">Es todo lo que tiene tu negocio para seguir vendiendo. Desde ' + desde + ' ' + difTxt + '.</p>' +
     '<div class="cord-row"><span>Al inicio</span>' + cord(c0, '') + '</div>' +
     '<div class="cord-row"><span>Hoy</span>' + cord(c1, 'now') + '</div>' +
-    '<div class="legend"><span><i class="sw s-caja"></i>Plata (efectivo y cuenta) <b>' + fmt(c1.caja) + '</b></span><span><i class="sw s-merc"></i>Mercadería <b>' + fmt(c1.merc) + '</b></span><span><i class="sw s-cobrar"></i>Te deben <b>' + fmt(c1.cobrar) + '</b></span></div>' +
+    '<div class="legend"><span><i class="sw s-caja"></i>Plata (efectivo y cuenta) <b>' + fmt(c1.caja) + '</b></span><span><i class="sw s-merc"></i>Mercadería' + (c1.mercEstimada ? ' (estimada)' : '') + ' <b>' + fmt(c1.merc) + '</b></span><span><i class="sw s-cobrar"></i>Te deben <b>' + fmt(c1.cobrar) + '</b></span></div>' +
     (c1.caja < 0 ? '<p class="note out">Tu plata sale en negativo: anotaste más salidas que lo disponible. Revisa la plata inicial en Mi negocio.</p>' : '') +
-    (!c1.mercFecha ? '<p class="note">Sin conteo de mercadería. <a href="#mercaderia">Anota cuánto vale</a> para ver tu capital completo.</p>' : '') +
+    (!c1.mercFecha ? '<p class="note">Sin conteo de mercadería. <a href="#mercaderia">Anota cuánto vale</a> para ver tu capital completo.</p>' : c1.mercEstimada ? '<p class="note">La mercadería se estima desde tu último conteo (' + fechaCorta(c1.mercFecha) + '): lo que compraste menos el costo de lo que vendiste.</p>' : '') +
     '</section>';
 }
 
@@ -1529,6 +1792,7 @@ function resumenCierreHTML(fecha){
     '<button type="button" class="btn" data-act="copiar-cierre" data-fecha="' + fecha + '">Copiar resumen</button>' +
     '<button type="button" class="btn btn-ghost" data-act="corregir-cierre" data-fecha="' + fecha + '">' + ic('editar') + 'Corregir el cierre</button></div>' +
     '<p class="note">El resumen no incluye nombres de clientes. Puedes mandarlo a tu familia, a tu socio o guardarlo en tu propio chat.</p>' +
+    despuesCierreHTML(fecha) +
     '<div class="btn-row"><a class="btn btn-ghost" href="#inicio">' + ic('atras') + 'Volver al inicio</a></div>';
 }
 const BILLETES = [200, 100, 50, 20, 10, 5, 2, 1, 0.5];
@@ -1710,6 +1974,40 @@ function actualizarCierre(){
   const q = f.elements.qr; if (q) { q.disabled = v.qrPend; }
 }
 
+// Lo que sigue al cierre: racha, cuánto se puede sacar, recordatorio y recomendar
+function despuesCierreHTML(fecha){
+  if (fecha !== hoyISO()) return '';
+  const rch = racha(), ps = puedeSacar(), fs = fraseSacar(ps);
+  const urlApp = !enClaude() && /^https?:/.test(location.protocol) ? location.origin + location.pathname : '';
+  return '<div class="res" style="margin-top:16px"><p class="cap">' + (rch >= 2 ? 'Llevas ' + rch + ' días seguidos cerrando' : 'Buen comienzo') + '</p>' +
+    '<p class="big">' + (fs.ok ? 'Puedes sacar hasta ' + fmt(ps.monto) + ' para la casa' : 'Hoy conviene no sacar plata para la casa') + '</p>' +
+    '<p>' + (fs.ok ? 'Es ' + fs.motivo + '.' : fs.motivo) + '</p>' +
+    '<div class="btn-row">' + (ps.monto > 0 ? '<button type="button" class="btn" data-act="anotar" data-tipo="retiro">' + ic('casa') + 'Anotar lo que saqué</button>' : '') +
+    '<button type="button" class="btn btn-ghost" data-act="recordatorio">' + ic('reloj') + 'Recordarme cerrar cada día</button>' +
+    (urlApp ? '<a class="btn btn-ghost" data-act="recomendar" href="' + esc(waLink('', 'Estoy usando Kipu para llevar las cuentas de mi negocio: cierro la caja en 2 minutos y me dice cuánta plata es libre. Es gratis y no pide NIT. ' + urlApp)) + '" target="_blank" rel="noopener">' + ic('compartir') + 'Recomendar Kipu</a>' : '') +
+    '</div></div>';
+}
+// Recordatorio diario como evento de calendario: no necesita servidor ni permisos
+function icsRecordatorio(hora){
+  const p = n => String(n).padStart(2, '0'), d = new Date();
+  const fecha = d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate());
+  const dias = S.perfil.diasSemana === 5 ? ';BYDAY=MO,TU,WE,TH,FR' : S.perfil.diasSemana === 6 ? ';BYDAY=MO,TU,WE,TH,FR,SA' : '';
+  const url = !enClaude() && /^https?:/.test(location.protocol) ? location.origin + location.pathname + '#cierre' : '';
+  return ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Kipu//Recordatorio de cierre//ES', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT',
+    'UID:kipu-cierre-' + fecha + '@kipu', 'DTSTAMP:' + fecha + 'T000000Z', 'DTSTART:' + fecha + 'T' + p(hora) + '0000', 'DURATION:PT10M',
+    'RRULE:FREQ=DAILY' + dias, 'SUMMARY:Cerrar el día en Kipu', 'DESCRIPTION:Cuenta la caja y haz el cierre del día. Toma 2 minutos.' + (url ? ' ' + url : ''),
+    url ? 'URL:' + url : '', 'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Cerrar el día en Kipu', 'TRIGGER:PT0M', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'].filter(Boolean).join('\r\n') + '\r\n';
+}
+function mostrarRecordatorio(){
+  D = null;
+  dlgBody.innerHTML = '<div class="dlg-head"><h2 id="dlg-t">Recordatorio para cerrar</h2><button type="button" class="icon-btn" data-dact="cerrar" aria-label="Cerrar">' + ic('cerrar') + '</button></div>' +
+    '<p>Kipu no puede mandarte avisos por sí sola. Lo que sí puede es darte un recordatorio para el calendario de tu celular, que te avisa cada día a la hora que elijas.</p>' +
+    '<label class="campo"><span class="lbl">¿A qué hora cierras?</span><select id="rec-hora">' + [17, 18, 19, 20, 21, 22, 23].map(h => '<option value="' + h + '"' + (h === 20 ? ' selected' : '') + '>' + h + ':00</option>').join('') + '</select></label>' +
+    '<div class="dlg-acc"><button type="button" class="btn btn-pri" data-dact="rec-ok">Descargar recordatorio</button><button type="button" class="btn btn-ghost" data-dact="cerrar">Cancelar</button></div>' +
+    '<p class="note">Al abrir el archivo, tu celular te pregunta si lo agregas al calendario. Si no te funciona, pon una alarma diaria en el reloj del celular.</p>';
+  abrirDlg();
+}
+
 /* =========================================================
    Movimientos y flujo de caja
    ========================================================= */
@@ -1764,8 +2062,8 @@ function flujoMes(){
     '<dl class="kv"><dt>Vendiste, al contado, fiado y pedidos</dt><dd>' + fmt(r.ventas) + '</dd><dt>Compraste mercadería</dt><dd>−' + fmt(r.compra) + '</dd><dt>Gastos del negocio</dt><dd>−' + fmt(r.gasto) + '</dd>' +
     (r.perdido ? '<dt>Fiado que diste por perdido</dt><dd>−' + fmt(r.perdido) + '</dd>' : '') +
     (r.interes ? '<dt>Intereses de tus deudas (estimado)</dt><dd>−' + fmt(r.interes) + '</dd>' : '') +
-    '<dt>Cambio en tu mercadería</dt><dd>' + (r.conteoOk ? (r.deltaMerc >= 0 ? '+' : '') + fmt(r.deltaMerc) : 'sin conteo') + '</dd></dl>' +
-    '<p class="note" style="margin-top:10px">' + (r.conteoOk ? 'Usa tus conteos de mercadería del inicio y del final del mes.' : 'Sin un conteo de mercadería al final del mes asumimos que no cambió, así que la cifra puede variar. <a href="#mercaderia">Anotar conteo</a>.') +
+    '<dt>Cambio en tu mercadería' + (r.conteoOk ? '' : ' (estimado)') + '</dt><dd>' + (r.deltaMerc >= 0 ? '+' : '') + fmt(r.deltaMerc) + '</dd></dl>' +
+    '<p class="note" style="margin-top:10px">' + (r.conteoOk ? 'Usa tus conteos de mercadería del inicio y del final del mes.' : 'Sin un conteo de mercadería al final del mes, el cambio se estima con tu margen: lo que compraste menos el costo de lo que vendiste. Con un conteo es más exacto. <a href="#mercaderia">Anotar conteo</a>.') +
     ' De las cuotas solo se resta la parte que es interés, calculada con los datos de <a href="#deudas">Mis deudas</a>.</p></div>';
   const casaTone = r.retiro > r.ganancia ? 'malo' : 'bueno';
   const casa = '<div class="res ' + casaTone + '"><p class="cap">Sacaste para la casa</p><p class="big num">' + fmt(r.retiro) + '</p>' +
@@ -1808,7 +2106,7 @@ function flujoAnio(){
     '<div class="chartbox" style="margin-top:14px">' + chartAnio(rows) + '<div class="legend" style="padding:4px 8px 6px"><span><i class="sw" style="background:var(--in)"></i>Entró</span><span><i class="sw" style="background:var(--out)"></i>Salió</span><span><i class="sw" style="background:var(--ink);height:4px;vertical-align:4px"></i>Plata al cierre del mes</span></div></div>' +
     '<h2>Mes a mes</h2><div class="tbox scroll-x"><table class="tabla"><caption class="sr">Flujo de caja por mes de ' + y + '</caption><thead><tr><th>Mes</th><th class="n">Entró</th><th class="n">Salió</th><th class="n">Quedó</th><th class="n">Plata al cierre</th><th class="n">Ganancia est.</th><th class="n">Para la casa</th></tr></thead><tbody>' + filas +
     '<tr class="tot"><td>Total</td><td class="n">' + fmt(tot.entro) + '</td><td class="n">' + fmt(tot.salio) + '</td><td class="n">' + (quedo >= 0 ? '+' : '') + fmt(quedo) + '</td><td class="n"></td><td class="n">' + fmt(tot.ganancia) + '</td><td class="n">' + fmt(tot.retiro) + '</td></tr></tbody></table></div>' +
-    '<p class="note" style="margin-top:8px">* Sin conteo de mercadería al cierre de ese mes: la ganancia asume que la mercadería no cambió.</p>' +
+    '<p class="note" style="margin-top:8px">* Sin conteo de mercadería al cierre de ese mes: la ganancia se estima con tu margen.</p>' +
     '<div class="btn-row"><button type="button" class="btn" data-act="exportar-flujo">' + ic('datos') + 'Descargar flujo del año (CSV)</button></div>';
 }
 function niceMax(v){ if (v <= 0) return 1; const p = Math.pow(10, Math.floor(Math.log10(v))), f = v / p; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p; }
@@ -1935,7 +2233,7 @@ function vFiado(){
     const dias = c.desde ? diasEntre(c.desde, hoy) : 0;
     const msg = 'Hola ' + c.nombre + ', te escribo de ' + negocio + '. Tienes una cuenta pendiente de ' + fmt(c.debe) + (c.desde ? ' desde el ' + fechaCorta(c.desde) : '') + '. Cuando puedas, me avisas. ¡Gracias!';
     const hist = c.movs.slice(-8).reverse().map(m => '<li><span>' + fechaCorta(m.fecha) + ', ' + {fiado:'llevó fiado', cobro:'pagó', perdido:'se dio por perdido', adelanto:'dejó adelanto', entrega:'se entregó su pedido'}[m.tipo] + '</span><span class="num ' + (m.tipo === 'fiado' ? 'out' : 'in') + '">' + fmt(m.monto) + '</span></li>').join('');
-    return '<li class="cli' + (dias > 30 ? ' viejo' : '') + '"><div class="cli-h"><strong>' + esc(c.nombre) + (c.grupo ? ' <span class="tag">' + esc(c.grupo) + '</span>' : '') + '</strong><span class="cli-m num">' + fmt(c.debe) + '</span></div>' +
+    return '<li class="cli' + (dias > 30 || (c.tope > 0 && c.debe > c.tope) ? ' viejo' : '') + '"><div class="cli-h"><strong>' + esc(c.nombre) + (c.grupo ? ' <span class="tag">' + esc(c.grupo) + '</span>' : '') + (c.tope > 0 && c.debe > c.tope ? ' <span class="tag tag-out">pasó su límite de ' + fmt(c.tope) + '</span>' : '') + '</strong><span class="cli-m num">' + fmt(c.debe) + '</span></div>' +
       '<p class="note">' + (c.desde ? 'Debe desde el ' + fechaCorta(c.desde) + (dias > 0 ? ', hace ' + dias + (dias === 1 ? ' día' : ' días') : ', hoy') : '') + (dias > 30 ? '. Lleva más de un mes.' : '') + '</p>' +
       '<div class="btn-row" style="margin:6px 0 0"><button type="button" class="btn btn-in" data-act="anotar" data-tipo="cobro" data-cliente="' + esc(c.nombre) + '">' + ic('entra') + 'Me pagó</button>' +
       (c.rapido > 0 ? '<button type="button" class="btn" data-act="fiado-rapido" data-cliente="' + esc(c.nombre) + '">' + ic('fiado') + 'Fiado de ' + fmt(c.rapido) + '</button>' : '<button type="button" class="btn" data-act="anotar" data-tipo="fiado" data-cliente="' + esc(c.nombre) + '">' + ic('fiado') + 'Fiado</button>') +
@@ -2186,6 +2484,9 @@ function textoPiloto(x, conNombre){
   l.push('Ganancia estimada: ' + fmt(x.ganancia));
   if (x.fiado || x.cobro) l.push('Fiado: dio ' + fmt(x.fiado) + ', cobró ' + fmt(x.cobro) + (x.perdido ? ', perdió ' + fmt(x.perdido) : ''));
   l.push('Deudas activas: ' + x.deudas + (x.caras ? ', de las cuales ' + x.caras + ' cuestan más de 5% al mes' : ''));
+  l.push('Racha actual de cierres: ' + x.racha + (x.racha === 1 ? ' día' : ' días'));
+  if (x.opinion) l.push('Si ya no pudiera usar Kipu: ' + OPINIONES[x.opinion.v].toLowerCase());
+  if (x.recomendaciones) l.push('Veces que recomendó Kipu: ' + x.recomendaciones);
   l.push('Sin datos de clientes, NIT ni impuestos.');
   if (S.ajustes.consentimiento) l.push('Consentimiento dado el ' + fechaNum(S.ajustes.consentimiento) + ' (versión ' + CONSENTIMIENTO_V + ').');
   return l.join('\n');
@@ -2208,6 +2509,8 @@ function vPiloto(){
     kpi('Ventas anotadas', fmt(x.ventas), fmt(x.ventasDia) + ' por día con datos, en ' + x.diasAnotados + ' días.') +
     kpi('Ganancia estimada', fmt(x.ganancia), 'Ventas menos compras, gastos, fiado perdido e intereses.', x.ganancia >= 0 ? 'bueno' : 'malo') +
     ((x.fiado || x.cobro) ? kpi('Fiado', 'Cobró ' + fmt(x.cobro), 'Dio ' + fmt(x.fiado) + (x.perdido ? ' y perdió ' + fmt(x.perdido) : '') + ' en el periodo.') : '') +
+    kpi('Racha de cierres', x.racha + (x.racha === 1 ? ' día' : ' días'), 'Días seguidos cerrando, sin contar los días que no abriste.', x.racha >= 5 ? 'bueno' : '') +
+    (x.opinion ? kpi('Si ya no pudieras usar Kipu', OPINIONES[x.opinion.v], 'Tu respuesta del ' + fechaCorta(x.opinion.fecha) + '.', x.opinion.v === 'mal' ? 'bueno' : '') : '') +
     kpi('Deudas caras', String(x.caras), 'De ' + x.deudas + ' activas, las que cuestan más de 5% al mes.', x.caras ? 'malo' : 'bueno') +
     '</ul>' +
     '<h2>Compartir con el equipo del piloto</h2>' + (S.ajustes.consentimiento ?
@@ -2443,6 +2746,7 @@ function csvPiloto(){
   fila('Tope semanal para la casa (Bs)', x => csvNum(x.tope)); fila('Semanas dentro del tope', x => x.tope > 0 ? x.semOk : ''); fila('Semanas evaluadas', x => x.tope > 0 ? x.semanas : '');
   fila('Ventas anotadas (Bs)', x => csvNum(x.ventas)); fila('Ganancia estimada (Bs)', x => csvNum(x.ganancia)); fila('Sacado para la casa (Bs)', x => csvNum(x.retiro));
   fila('Fiado dado (Bs)', x => csvNum(x.fiado)); fila('Fiado cobrado (Bs)', x => csvNum(x.cobro)); fila('Fiado perdido (Bs)', x => csvNum(x.perdido));
+  fila('Racha actual de cierres (días)', x => x.racha); fila('Si ya no pudiera usar Kipu', x => x.opinion ? OPINIONES[x.opinion.v] : ''); fila('Veces que recomendó Kipu', x => x.recomendaciones);
   fila('Deudas activas', x => x.deudas); fila('Deudas de más de 5% al mes', x => x.caras);
   return aCSV(filas);
 }
@@ -2450,7 +2754,7 @@ function csvPiloto(){
 const enClaude = () => !!(window.claude && typeof window.claude.use === 'function');
 function descargarArchivo(nombre, contenido){
   try {
-    const tipo = /\.json$/i.test(nombre) ? 'application/json' : /\.txt$/i.test(nombre) ? 'text/plain;charset=utf-8' : 'text/csv;charset=utf-8';
+    const tipo = /\.ics$/i.test(nombre) ? 'text/calendar;charset=utf-8' : /\.json$/i.test(nombre) ? 'application/json' : /\.txt$/i.test(nombre) ? 'text/plain;charset=utf-8' : 'text/csv;charset=utf-8';
     const url = URL.createObjectURL(new Blob([contenido], {type:tipo}));
     const a = document.createElement('a');
     a.href = url; a.download = nombre; a.rel = 'noopener'; a.style.display = 'none';
@@ -2529,11 +2833,12 @@ function abrirAnotar(o){
     const m = S.movs.find(x => x.id === o.id); if (!m) return;
     D = {kind:'mov', id:m.id, tipo:m.tipo, montoTxt:numTxt(m.monto), medio:m.medio, cat:m.cat, cliente:m.cliente, fecha:m.fecha, nota:m.nota, fondo:m.fondo, deuda:m.deuda, costoTxt:m.costo != null ? numTxt(m.costo) : '', origen:m.origen, err:{}};
   } else {
-    D = {kind:'mov', id:null, tipo:o.tipo || null, montoTxt:'', medio:'efectivo', cat:o.cat || '', cliente:o.cliente || '', fecha:isISO(o.fecha) ? o.fecha : hoyISO(), nota:'', fondo:o.fondo || '', deuda:o.deuda || '', costoTxt:'', origen:'manual', err:{}};
-    if (D.tipo === 'cuota' && D.deuda) { const d = deudaPorId(D.deuda); if (d) D.montoTxt = numTxt(d.cuota); }
-    if (D.tipo === 'perdido' && D.cliente) { const s = saldoCliente(D.cliente); if (s > 0) D.montoTxt = numTxt(s); }
-    if (D.tipo === 'entrega' && D.cliente) { const s = adelantoCliente(D.cliente); if (s > 0) D.montoTxt = numTxt(s); }
-    if (D.tipo === 'apartar' && D.fondo) { const f = fondoPorId(D.fondo); if (f && f.porDia > 0) D.montoTxt = numTxt(f.porDia); }
+    D = {kind:'mov', id:null, tipo:o.tipo || null, montoTxt:o.monto > 0 ? numTxt(o.monto) : '', medio:o.medio === 'qr' ? 'qr' : 'efectivo', cat:o.cat || '', cliente:o.cliente || '', fecha:isISO(o.fecha) ? o.fecha : hoyISO(), nota:o.nota || '', fondo:o.fondo || '', deuda:o.deuda || '', costoTxt:'', origen:'manual', entendido:o.entendido || '', err:{}};
+    if (D.tipo === 'cuota' && D.deuda && !D.montoTxt) { const d = deudaPorId(D.deuda); if (d) D.montoTxt = numTxt(d.cuota); }
+    if (D.tipo === 'cuota' && D.deuda && !D.fondo) { const f = S.fondos.find(x => x.deuda === D.deuda); if (f) D.fondo = f.id; }
+    if (D.tipo === 'perdido' && D.cliente && !D.montoTxt) { const s = saldoCliente(D.cliente); if (s > 0) D.montoTxt = numTxt(s); }
+    if (D.tipo === 'entrega' && D.cliente && !D.montoTxt) { const s = adelantoCliente(D.cliente); if (s > 0) D.montoTxt = numTxt(s); }
+    if (D.tipo === 'apartar' && D.fondo && !D.montoTxt) { const f = fondoPorId(D.fondo); if (f && f.porDia > 0) D.montoTxt = numTxt(f.porDia); }
   }
   pintarDlg(); abrirDlg();
   enfocar(D.tipo ? '#d-monto' : '.tipo');
@@ -2554,7 +2859,7 @@ function leerDlg(){
     const si = $('#d-solo', dlgBody); if (si) D.soloInteres = si.checked;
     const rg = $('#d-reg', dlgBody); if (rg) D.registrar = rg.checked;
   } else if (D.kind === 'cliente') {
-    const map = {'d-nombre':'nombre', 'd-grupo':'grupo', 'd-tel':'telefono', 'd-rapido':'rapidoTxt'};
+    const map = {'d-nombre':'nombre', 'd-grupo':'grupo', 'd-tel':'telefono', 'd-rapido':'rapidoTxt', 'd-tope':'topeTxt'};
     for (const k in map) { const v = g(k); if (v != null) D[map[k]] = v; }
   }
 }
@@ -2615,7 +2920,13 @@ function pintarDlg(){
   if (D.tipo === 'entrega') nota = 'Si al entregar te pagaron el resto, anótalo aparte como venta, o deja que lo calcule el cierre.';
   if (D.tipo === 'perdido') nota = 'Se resta de tu ganancia y el cliente deja de aparecer como deudor.';
   if (D.origen === 'cierre') nota = 'Este movimiento viene del cierre del día. Si lo cambias, el cierre deja de cuadrar. Mejor <button type="button" class="linkbtn" data-dact="ir-cierre">rehaz el cierre de ese día</button>.';
-  dlgBody.innerHTML = dlgHead(D.id ? 'Corregir: ' + t.corto.toLowerCase() : t.label, !D.id) +
+  let aviso = '';
+  if (D.entendido) aviso = '<p class="entendido">' + ic('info') + '<span>Entendí: <strong>' + esc(t.label.toLowerCase()) + '</strong>. Revisa y guarda, o cambia el tipo con la flecha de arriba.</span></p>';
+  if (D.tipo === 'fiado' && D.cliente.trim()) {
+    const cl = clientesTodos().find(x => claveCli(x.nombre) === claveCli(D.cliente)), mt = parseMonto(D.montoTxt);
+    if (cl && cl.tope > 0) { const tot = r2(cl.debe + (mt > 0 ? mt : 0)); aviso += '<p class="note ' + (tot > cl.tope ? 'out' : '') + '" id="d-tope-n">' + (tot > cl.tope ? 'Ojo: con este fiado ' + esc(cl.nombre) + ' deberá ' + fmt(tot) + ', más que su límite de ' + fmt(cl.tope) + '.' : esc(cl.nombre) + ' debe ' + fmt(cl.debe) + '. Su límite es ' + fmt(cl.tope) + '.') + '</p>'; }
+  }
+  dlgBody.innerHTML = dlgHead(D.id ? 'Corregir: ' + t.corto.toLowerCase() : t.label, !D.id) + aviso +
     '<form id="f-mov" novalidate>' + campos + (nota ? '<p class="note" style="margin-top:-6px">' + nota + '</p>' : '') +
     '<div class="dlg-acc"><button type="submit" class="btn btn-pri">' + (D.id ? 'Guardar cambios' : 'Guardar') + '</button>' +
     (D.id ? '<button type="button" class="btn btn-danger" data-dact="borrar">Borrar</button>' : '<button type="button" class="btn btn-ghost" data-dact="cerrar">Cancelar</button>') + '</div></form>';
@@ -2754,8 +3065,8 @@ function guardarDeuda(){
 /* ---------- Cliente ---------- */
 function abrirCliente(nombre){
   const c = nombre ? clientesTodos().find(x => claveCli(x.nombre) === claveCli(nombre)) : null;
-  D = c ? {kind:'cliente', orig:c.nombre, nombre:c.nombre, grupo:c.grupo, telefono:c.telefono, rapidoTxt:numTxt(c.rapido), err:{}}
-        : {kind:'cliente', orig:null, nombre:'', grupo:ui.grupo && ui.grupo !== '_sin' ? ui.grupo : '', telefono:'', rapidoTxt:'', err:{}};
+  D = c ? {kind:'cliente', orig:c.nombre, nombre:c.nombre, grupo:c.grupo, telefono:c.telefono, rapidoTxt:numTxt(c.rapido), topeTxt:numTxt(c.tope), err:{}}
+        : {kind:'cliente', orig:null, nombre:'', grupo:ui.grupo && ui.grupo !== '_sin' ? ui.grupo : '', telefono:'', rapidoTxt:'', topeTxt:'', err:{}};
   pintarDlg(); abrirDlg(); enfocar('#d-nombre');
 }
 function pintarCliente(){
@@ -2766,6 +3077,7 @@ function pintarCliente(){
     '<label class="campo"><span class="lbl">Grupo o ruta</span><input id="d-grupo" type="text" maxlength="40" list="dl-grupos" autocomplete="off" placeholder="Por ejemplo, Cuadra del mercado" value="' + esc(D.grupo) + '"><datalist id="dl-grupos">' + grupos().map(g => '<option value="' + esc(g) + '">').join('') + '</datalist><span class="ayuda">Sirve para cobrar por zona o por ruta.</span></label>' +
     '<div class="grid2"><label class="campo"><span class="lbl">Celular para WhatsApp</span><input id="d-tel" type="tel" inputmode="tel" maxlength="20" autocomplete="off" placeholder="Por ejemplo, 7xxxxxxx" value="' + esc(D.telefono) + '"' + attrErr(err, 'tel') + '>' + campoErr(err, 'tel') + '<span class="ayuda">Opcional. Con 8 dígitos se agrega el código de Bolivia.</span></label>' +
     '<label class="campo"><span class="lbl">Fiado rápido</span><input id="d-rapido" type="text" inputmode="decimal" autocomplete="off" placeholder="0" value="' + esc(D.rapidoTxt) + '"' + attrErr(err, 'rapido') + '>' + campoErr(err, 'rapido') + '<span class="ayuda">Lo que suele llevar. Se anota con un solo toque.</span></label></div>' +
+    '<label class="campo"><span class="lbl">No fiarle más de</span><input id="d-tope" type="text" inputmode="decimal" autocomplete="off" placeholder="Sin límite" value="' + esc(D.topeTxt) + '"' + attrErr(err, 'tope') + '>' + campoErr(err, 'tope') + '<span class="ayuda">Kipu te avisa cuando un fiado nuevo pase este monto.</span></label>' +
     '<div class="dlg-acc"><button type="submit" class="btn btn-pri">Guardar</button><button type="button" class="btn btn-ghost" data-dact="cerrar">Cancelar</button></div>' +
     (D.orig ? '<p class="note">Si cambias el nombre, se cambia también en todo su historial.</p>' : '') + '</form>';
 }
@@ -2776,11 +3088,13 @@ function guardarCliente(){
   const digitos = tel.replace(/\D/g, '');
   if (tel && (digitos.length < 7 || digitos.length > 15)) err.tel = 'Revisa el número.';
   if (!(rapido >= 0)) err.rapido = 'Escribe un monto válido.';
+  const tope = String(D.topeTxt || '').trim() === '' ? 0 : parseMonto(D.topeTxt);
+  if (!(tope >= 0)) err.tope = 'Escribe un monto válido o déjalo vacío.';
   if (Object.keys(err).length) { D.err = err; pintarDlg(); return; }
   if (D.orig && nombre !== D.orig) S.movs.forEach(m => { if (claveCli(m.cliente) === claveCli(D.orig)) m.cliente = nombre; });
   const k = claveCli(D.orig || nombre);
   const i = S.clientes.findIndex(c => claveCli(c.nombre) === k);
-  const c = {id:i > -1 ? S.clientes[i].id : uid(), nombre, grupo:D.grupo.trim().slice(0, 40), telefono:tel.slice(0, 20), rapido:r2(rapido)};
+  const c = {id:i > -1 ? S.clientes[i].id : uid(), nombre, grupo:D.grupo.trim().slice(0, 40), telefono:tel.slice(0, 20), rapido:r2(rapido), tope:r2(tope)};
   if (i > -1) S.clientes[i] = c; else S.clientes.push(c);
   guardar(); cerrarDlg(); render(); toast('Cliente guardado');
 }
@@ -2796,10 +3110,11 @@ dlgBody.addEventListener('click', e => {
     else toast('Selecciona el texto y cópialo');
     return;
   }
+  if (a === 'rec-ok') { const h = +($('#rec-hora', dlgBody) || {}).value || 20; cerrarDlg(); ofrecerArchivo('kipu-recordatorio.ics', icsRecordatorio(h)); return; }
   if (!D) return;
   leerDlg();
-  if (a === 'tipo') { D.tipo = b.dataset.v; D.err = {}; if (D.tipo === 'cambio') D.medio = 'efectivo'; pintarDlg(); enfocar('#d-monto'); }
-  else if (a === 'atras') { D.tipo = null; D.err = {}; pintarDlg(); }
+  if (a === 'tipo') { D.tipo = b.dataset.v; D.err = {}; D.entendido = ''; if (D.tipo === 'cambio') D.medio = 'efectivo'; pintarDlg(); enfocar('#d-monto'); }
+  else if (a === 'atras') { D.tipo = null; D.err = {}; D.entendido = ''; D.todos = true; pintarDlg(); }
   else if (a === 'todos') { D.todos = true; pintarDlg(); }
   else if (a === 'medio') { D.medio = b.dataset.v; pintarDlg(); }
   else if (a === 'cat') { D.cat = b.dataset.v; pintarDlg(); }
@@ -2831,6 +3146,11 @@ dlgBody.addEventListener('input', e => {
     const sug = sugerenciaFondo(), s = $('#d-sug', dlgBody), pd = $('#d-pordia', dlgBody);
     if (s) s.textContent = sug ? 'Sugerido: ' + fmt(sug) + ' por día, contando ' + Math.round(diasMes()) + ' días de trabajo al mes.' : 'Se te propondrá en cada cierre del día.';
     if (id === 'd-meta' && !D.manual && pd) { pd.value = sug ? String(sug) : ''; D.porDiaTxt = pd.value; }
+  }
+  if (D.kind === 'mov' && D.tipo === 'fiado' && id === 'd-monto' && $('#d-tope-n', dlgBody)) {
+    leerDlg();
+    const cl = clientesTodos().find(x => claveCli(x.nombre) === claveCli(D.cliente)), mt = parseMonto(D.montoTxt), el = $('#d-tope-n', dlgBody);
+    if (cl && cl.tope > 0) { const tot = r2(cl.debe + (mt > 0 ? mt : 0)); el.className = 'note ' + (tot > cl.tope ? 'out' : ''); el.textContent = tot > cl.tope ? 'Ojo: con este fiado ' + cl.nombre + ' deberá ' + fmt(tot) + ', más que su límite de ' + fmt(cl.tope) + '.' : cl.nombre + ' debe ' + fmt(cl.debe) + '. Su límite es ' + fmt(cl.tope) + '.'; }
   }
   if (D.kind === 'deuda' && /^d-(recibido|cuota|n)$/.test(id)) { leerDlg(); $('#d-costo', dlgBody).innerHTML = costoPrevioHTML(); }
 });
@@ -2902,6 +3222,7 @@ function ruta(){ const h = (location.hash || '').replace(/^#/, ''); return RUTAS
 function render(){
   pintarBanner();
   const r = ruta();
+  document.body.classList.toggle('sin-negocio', !S.perfil);
   if (!S.perfil && r !== 'datos') { main.innerHTML = vBienvenida(); marcarNav(null); return; }
   main.classList.toggle('ancho', r === 'inicio');
   try { main.innerHTML = RUTAS[r](); }
@@ -2952,6 +3273,14 @@ function cargarProducto(p){
   const bb = $('[data-act="prod-borrar"]'); if (bb) bb.hidden = false;
   actualizarPrecio(); f.scrollIntoView({behavior:'smooth', block:'start'}); (usd ? f.elements.costoUsd : f.elements.costoNuevo).focus();
 }
+// Interpreta una frase y abre el formulario ya lleno, para confirmar con un toque
+function anotarConPalabras(txt){
+  const r = interpretar(txt);
+  if (!r.tipo) { abrirAnotar({monto:r.monto, nota:r.texto.slice(0, 140), fecha:r.fecha}); toast('No entendí qué fue. Elige el tipo'); return; }
+  abrirAnotar({tipo:r.tipo, monto:r.monto, medio:r.medio, cliente:r.cliente, cat:r.cat, nota:r.nota, fecha:r.fecha, fondo:r.fondo, deuda:r.deuda, entendido:r.texto});
+  if (!(r.monto > 0)) toast('No entendí el monto. Escríbelo');
+  const i = $('#dilo-txt'); if (i) i.value = '';
+}
 function irInicio(){ if (location.hash !== '#inicio') location.hash = '#inicio'; else render(); }
 
 document.addEventListener('click', e => {
@@ -2991,6 +3320,12 @@ document.addEventListener('click', e => {
       if (!confirmar(b, 'Toca otra vez para retirarlo')) return;
       S.ajustes.consentimiento = ''; ui.pilotoNombre = false; guardar(); render(); toast('Consentimiento retirado'); break;
     case 'instalar': instalarApp(); break;
+    case 'bv-ir': { const f = $('#f-bienvenida'); if (f) bvIr(f, +ds.n); break; }
+    case 'guia-ocultar': S.ajustes.guiaOculta = true; guardar(); render(); break;
+    case 'opinar': if (!OPINIONES[ds.v]) return; S.ajustes.opinion = {v:ds.v, fecha:hoyISO()}; guardar(); render(); toast('Gracias por tu respuesta'); break;
+    case 'dictar': dictar(txt => { const i = $('#dilo-txt'); if (i) i.value = txt; anotarConPalabras(txt); }); break;
+    case 'recordatorio': mostrarRecordatorio(); break;
+    case 'recomendar': S.ajustes.recomendaciones = (S.ajustes.recomendaciones || 0) + 1; guardar(); break;
     case 'instalar-no': try { localStorage.setItem(KEY_INSTALAR, '1'); } catch (err) {} render(); break;
     case 'sumar': {
       const f = b.closest('form'), inp = f && f.elements[ds.campo]; if (!inp) return;
@@ -3041,7 +3376,7 @@ document.addEventListener('click', e => {
       const c = clientesTodos().find(x => claveCli(x.nombre) === claveCli(ds.cliente)); if (!c || !(c.rapido > 0)) return;
       const m = {id:uid(), fecha:hoyISO(), tipo:'fiado', monto:c.rapido, medio:'efectivo', cat:'', cliente:c.nombre, nota:'', origen:'manual', costo:null, ayud:null, fondo:'', deuda:''};
       S.movs.push(m); ordenar(); guardar(); render();
-      toast('Fiado de ' + fmt(m.monto) + ' para ' + c.nombre, {label:'Deshacer', fn:() => { S.movs = S.movs.filter(x => x.id !== m.id); guardar(); render(); toast('Se quitó'); }});
+      toast((c.tope > 0 && c.debe + m.monto > c.tope ? 'Ojo, pasó su límite. ' : '') + 'Fiado de ' + fmt(m.monto) + ' para ' + c.nombre, {label:'Deshacer', fn:() => { S.movs = S.movs.filter(x => x.id !== m.id); guardar(); render(); toast('Se quitó'); }});
       break;
     }
     case 'fiado-perdido': {
@@ -3126,19 +3461,18 @@ document.addEventListener('submit', e => {
   e.preventDefault();
   const g = n => f.elements[n] ? f.elements[n].value : '';
   if (f.id === 'f-bienvenida') {
-    const nombre = g('nombre').trim(), ef = montoCampo(g, 'efectivo'), cu = montoCampo(g, 'cuenta'), merc = montoCampo(g, 'merc'), sueldo = montoCampo(g, 'sueldo');
-    const errs = [];
-    if (!nombre) errs.push('Escribe el nombre de tu negocio.');
-    const cn = leerCamposNegocio(f, errs);
-    if (!Number.isFinite(ef) || ef < 0) errs.push('Revisa el efectivo: escribe solo números.');
-    if (!Number.isFinite(cu) || cu < 0) errs.push('Revisa la plata de tu cuenta.');
-    if (!Number.isFinite(merc) || merc < 0) errs.push('Revisa el valor de la mercadería.');
-    if (!Number.isFinite(sueldo) || sueldo < 0) errs.push('Revisa el tope semanal.');
-    if (errs.length) { $('#bv-err').innerHTML = errsHTML(errs); if (!nombre) f.elements.nombre.focus(); return; }
+    // Enter en un paso intermedio avanza; solo el último paso crea el negocio
+    if ((+f.dataset.paso || 1) < 3) { bvIr(f, 1); return; }
+    const nombre = g('nombre').trim(), ef = montoCampo(g, 'efectivo'), cu = montoCampo(g, 'cuenta');
+    const tipo = ['comercio', 'comida', 'servicio'].indexOf(g('tipo')) > -1 ? g('tipo') : 'comercio', modo = g('modo') === 'cada' ? 'cada' : 'cierre';
+    if (!nombre || !Number.isFinite(ef) || ef < 0 || !Number.isFinite(cu) || cu < 0) { f.dataset.paso = nombre ? 2 : 1; f.querySelectorAll('.bv-paso').forEach(p => { p.hidden = +p.dataset.paso !== +f.dataset.paso; }); bvIr(f, 1); return; }
     const hoy = hoyISO();
-    S = VACIO(); S.perfil = {nombre, rubro:g('rubro').trim(), sueldoSemanal:r2(sueldo), efectivoInicial:r2(ef), cuentaInicial:r2(cu), fechaInicio:hoy, diasSemana:+g('dias') || 6, margen:cn.margen, insumos:cn.insumos, tipo:cn.tipo, modoVentas:cn.modoVentas};
-    if (merc > 0) S.conteos.push({id:uid(), fecha:hoy, valor:r2(merc)});
-    guardar(); pedirPersistencia(); irInicio(); toast(cn.modoVentas === 'cada' ? 'Listo. Anota tus ventas del día' : 'Listo. Al final del día, haz tu primer cierre');
+    // Margen e insumos empiezan con un valor típico; Kipu propone el real con los conteos de mercadería
+    S = VACIO(); S.perfil = {nombre, rubro:'', sueldoSemanal:0, efectivoInicial:r2(ef), cuentaInicial:r2(cu), fechaInicio:hoy, diasSemana:6, margen:20, insumos:tipo === 'servicio' ? 20 : 40, tipo, modoVentas:modo};
+    guardar(); pedirPersistencia(); irInicio(); toast(modo === 'cada' ? 'Listo. Anota tus ventas del día' : 'Listo. Esta noche, haz tu primer cierre');
+  } else if (f.id === 'f-dilo') {
+    const txt = g('texto').trim(); if (!txt) { f.elements.texto.focus(); return; }
+    anotarConPalabras(txt);
   } else if (f.id === 'f-cierre') {
     const v = leerCierre(f), errs = [], hoy = hoyISO();
     if (!Number.isFinite(v.efectivo) || v.efectivo < 0) errs.push('Escribe cuánto efectivo contaste en la caja.');
