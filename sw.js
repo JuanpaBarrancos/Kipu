@@ -1,6 +1,6 @@
 /* Service worker de Kipu: guarda la app en el celular para que abra sin internet.
    Los datos del negocio NO pasan por aquí: viven en el almacenamiento del navegador. */
-const VERSION = 'kipu-0fa3f0016a';
+const VERSION = 'kipu-e007e2d32e';
 const ARCHIVOS = [
   "./",
   "./index.html",
